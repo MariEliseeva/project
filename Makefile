@@ -15,4 +15,4 @@ setValue.o: src/setValue.cpp
 expression.o: src/expression.cpp
 	g++ -c -g -std=c++11 -pedantic -Wall -Wextra -Werror -Iinclude src/expression.cpp -o bin/expression.o
 clean:
-	rm *.o ./avr
+	rm bin/*.o ./avr
