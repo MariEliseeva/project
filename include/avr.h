@@ -10,10 +10,11 @@ const size_t MAX_LEN = 1000;
 const size_t MAX_ARGS = 25;
 class avr {
   public:
-    avr(size_t _memorySize);
+    avr(size_t _memorySize); //tested
     size_t perform(std::string &values, std::pair<std::string, std::string> &comand, std::set<uint16_t> &changedRegisters, bool quite);
     int8_t get(int t);
     size_t memorySize;
+    friend class AvrTest;
   private:
     void doAction(std::string action, std::unordered_map<std::string, int> &operandValues, std::set<uint16_t> &changedRegisters);
     int getValue(std::string argument, std::unordered_map<std::string, int> &operandValues);
@@ -34,11 +35,11 @@ class avr {
     void defSREGSetValue(std::string left, int value);
     void setRegBitValue(std::string left, int value, std::unordered_map<std::string, int> &operandValues, 
                         std::set<uint16_t> &changedRegisters);
-    int operEvaluate(std::string expr, std::unordered_map<std::string, int> &operandValues, std::set<uint16_t> &changedRegisters);
+    int operEvaluate(std::string expr, std::unordered_map<std::string, int> &operandValues, std::set<uint16_t> &changedRegisters); //tested
 
     void fillOperandMap(std::string values, 
                         std::unordered_map<std::string, int> &operandValues,
-                        std::string *operandNumber, std::set<uint16_t> &changedRegisters);
+                        std::string *operandNumber, std::set<uint16_t> &changedRegisters); //tested
 
   	std::vector <int8_t> memory = std::vector<int8_t>(64, 0);
     size_t PC = 0;
@@ -47,13 +48,13 @@ class avr {
 
 void makeOperandMap(std::string args, 
                         std::unordered_map<std::string, int> &operandValues,
-                        std::string *operandNumber);
+                        std::string *operandNumber);//tested
 
 
-void fillActionsVector(std::string comands, std::vector<std::string> &actions);
+void fillActionsVector(std::string comands, std::vector<std::string> &actions);//tested
 
 
-int operationPrioriry(char c);
+int operationPriority(char c);//tested
 
 class avrException {
  public:

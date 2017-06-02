@@ -1,6 +1,6 @@
 #include "avr.h"
 
-int operationPrioriry( char c ) {
+int operationPriority( char c ) {
     if (c == ')') return 0;
     if (c == 'o') return 1;
     if (c == 'a') return 2;
@@ -48,7 +48,7 @@ int avr::operEvaluate(std::string expr, std::unordered_map<std::string, int> &op
         	}
         	if (expr[i] == '=') i++;
 
-            while (operationPrioriry(expr[i]) <= operationPrioriry(opers[operNumber]) 
+            while (operationPriority(expr[i]) <= operationPriority(opers[operNumber]) 
                    && opers[operNumber] != '('){
 
                 operation = opers[operNumber];
