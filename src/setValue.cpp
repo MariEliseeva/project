@@ -83,10 +83,11 @@ void avr::setRegBitValue(std::string left, int value,
     std::string bitNumber = "";
     for (size_t j = i; j < left.size() - 1; j++) bitNumber += left[j];
                 
-     if (operandValues.count(bitNumber) == 0) {
+    if (operandValues.count(bitNumber) == 0) {
         if (operandValues.count(regNumber) == 0) {
-        	changedRegisters.insert(stoi(regNumber));    
-            try {
+        	try {
+                regNumber[0] = '0';
+                changedRegisters.insert(stoi(regNumber));    
         	    regNumber = "";
                 for (size_t j = 1; j < i - 1; j++) regNumber += left[j];
                 if ((size_t)stoi(regNumber) >= memorySize) throw avrException("Reference to a non-existent memory.");
@@ -113,8 +114,9 @@ void avr::setRegBitValue(std::string left, int value,
     }   
 
     if (operandValues.count(regNumber) == 0) {
-    	changedRegisters.insert(stoi(regNumber));    
-        try {
+    	try {
+            regNumber[0] = '0';
+            changedRegisters.insert(stoi(regNumber));    
       	    regNumber = "";
             for (size_t j = 1; j < i - 1; j++) regNumber += left[j];
             if ((size_t)stoi(regNumber) >= memorySize) throw avrException("Reference to a non-existent memory.");
