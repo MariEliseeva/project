@@ -49,13 +49,13 @@ class avr {
 
 void makeOperandMap(std::string args, 
                         std::unordered_map<std::string, int> &operandValues,
-                        std::string *operandNumber);//tested
+                        std::string *operandNumber);
 
 
-void fillActionsVector(std::string comands, std::vector<std::string> &actions);//tested
+void fillActionsVector(std::string comands, std::vector<std::string> &actions);
 
 
-int operationPriority(char c);//tested
+int operationPriority(char c);
 
 class avrException {
  public:
