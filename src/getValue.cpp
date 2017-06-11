@@ -35,7 +35,7 @@ int avr::regBitGetValue(std::string argument, std::unordered_map<std::string, in
     else i = 4;
 
     std::string regNumber = "";
-    for (size_t j = 0; j < i - 1; j++) regNumber += argument[i];
+    for (size_t j = 0; j < i - 1; j++) regNumber += argument[j];
 
     std::string bitNumber = "";
     size_t brackets = 1;
@@ -46,14 +46,12 @@ int avr::regBitGetValue(std::string argument, std::unordered_map<std::string, in
     }
     if (i != argument.size()) throw avrException("Unknown argument in comands description file.");
 
-
     if (operandValues.count(bitNumber) == 0) {
         if (operandValues.count(regNumber) == 0) {
             try {
-        	    regNumber = "";
-                for (size_t j = 1; j < i - 1; j++) regNumber += argument[i];
+        	    regNumber[0] = '0';
                 if ((size_t)stoi(regNumber) >= memorySize) throw avrException("Reference to a non-existent memory.");
-                return (memory[stoi(regNumber)] >> (stoi(bitNumber) & ((1 << 8) - 1))) & 1;
+                return (memory[stoi(regNumber)] >> ((stoi(bitNumber) & ((1 << 8) - 1)))) & 1;
     	    } catch (std::invalid_argument) {
                 throw avrException("Unknown argument in comands description file.");
     	    }
@@ -61,7 +59,7 @@ int avr::regBitGetValue(std::string argument, std::unordered_map<std::string, in
 
         if ((size_t)operandValues[regNumber] >= memorySize) throw avrException("Reference to a non-existent memory.");
     	try {
-        	    return (memory[operandValues[regNumber]] >> (stoi(bitNumber) & ((1 << 8) - 1))) & 1;
+        	    return (memory[operandValues[regNumber]] >> ((stoi(bitNumber) & ((1 << 8) - 1)))) & 1;
     	    } catch (std::invalid_argument) {
                 throw avrException("Unknown argument in comands description file.");
     	    }
@@ -69,10 +67,9 @@ int avr::regBitGetValue(std::string argument, std::unordered_map<std::string, in
 
     if (operandValues.count(regNumber) == 0) {
         try {
-      	    regNumber = "";
-            for (size_t j = 1; j < i - 1; j++) regNumber += argument[i];
+      	    regNumber[0] = '0';
             if ((size_t)stoi(regNumber) >= memorySize) throw avrException("Reference to a non-existent memory.");
-            return (memory[stoi(regNumber)] >> (operandValues[bitNumber] & ((1 << 8) - 1))) & 1;
+            return (memory[stoi(regNumber)] >> ((operandValues[bitNumber] & ((1 << 8) - 1)))) & 1;
         } catch (std::invalid_argument) {
             throw avrException("Unknown argument in comands description file.");
         }
@@ -80,7 +77,7 @@ int avr::regBitGetValue(std::string argument, std::unordered_map<std::string, in
 
     if ((size_t)operandValues[regNumber] >= memorySize) throw avrException("Reference to a non-existent memory.");
     try {
-            return (memory[operandValues[regNumber]] >> (operandValues[bitNumber] & ((1 << 8) - 1))) & 1;
+            return (memory[operandValues[regNumber]] >> ((operandValues[bitNumber] & ((1 << 8) - 1)))) & 1;
     	} catch (std::invalid_argument) {
             throw avrException("Unknown argument in comands description file.");
     	}
@@ -127,6 +124,7 @@ int avr::regGetValue (std::string argument) {
     size_t Number = 0;
 
     for (size_t i = 1; i < argument.size(); i++) {
+        Number *= 10;
         Number += argument[i] - '0';
         if (argument[i] < '0' || argument[i] > '9') throw avrException("Unknown argument in comands description file.");
     }
@@ -150,7 +148,6 @@ int avr::constGetValue (std::string argument, std::unordered_map<std::string, in
 }
 int avr::getValue(std::string argument, std::unordered_map<std::string, int> &operandValues) {
     //если просто число, то оно и возвращается. 
-
 	bool isNumberExpr = true;    
 
     for (size_t i = 0; i < argument.size(); i++) {
@@ -173,17 +170,18 @@ int avr::getValue(std::string argument, std::unordered_map<std::string, int> &op
         argument[2] == 'E' && argument[3] == 'G' && argument[4] == '(') 
         return SREGGetValue(argument, operandValues); //обращение к флагам через SREG
 
+    if (argument[0] == 'R' && ((argument.size() >= 3 && argument[2] == '(') 
+                            || (argument.size() >= 4 && argument[3] == '('))) {
+        return regBitGetValue(argument, operandValues);//определённый бит регистра
+        
+    }
+
     if (argument[0] == 'R' && argument[1] >= 'a' && argument[1] <= 'z' ) {
     	if (operandValues.count(argument) == 0) throw avrException("Unknown argument in comands description file.");
         return memory[operandValues[argument]]; //Регистры - аргументы команды
     }
 
-    if (argument[0] == 'R' && ((argument.size() >= 3 && argument[2] == '(') 
-                            || (argument.size() >= 4 && argument[3] == '('))) {
-    	
-        return regBitGetValue(argument, operandValues);//определённый бит регистра
-	    
-    }
+
 
     if (argument[0] == 'R' && argument[1] >= '0' && argument[1] <= '9') {
     	return regGetValue(argument);//регистр по номеру
@@ -205,15 +203,29 @@ int avr::getValue(std::string argument, std::unordered_map<std::string, int> &op
     }
 
     if (argument == "RX") {
-        return (memory[26] << 8) + memory[27];
+        int res = memory[26] << 8;
+        for (int i = 0; i < 8; i++) {
+            res |= (((memory[27] >> i) & 1) << i);
+        }
+        return res;
+
     }
 
     if (argument == "RY") {
-        return (memory[28] << 8) + memory[29];
+        int res = memory[28] << 8;
+        for (int i = 0; i < 8; i++) {
+            res |= (((memory[29] >> i) & 1) << i);
+        }
+        return res;
+
     }
 
     if (argument == "RZ") {
-        return (memory[30] << 8) + memory[31];
+        int res = memory[30] << 8;
+        for (int i = 0; i < 8; i++) {
+            res |= (((memory[31] >> i) & 1) << i);
+        }
+        return res;
     }
     //пары регистров - X,Y,Z  
 

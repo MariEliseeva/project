@@ -14,6 +14,7 @@ class avr {
     size_t perform(std::string &values, std::pair<std::string, std::string> &comand, std::set<uint16_t> &changedRegisters, bool quite);
     int8_t get(int t);
     size_t memorySize;
+    friend class AvrTest;
   private:
     void doAction(std::string action, std::unordered_map<std::string, int> &operandValues, std::set<uint16_t> &changedRegisters);
     int getValue(std::string argument, std::unordered_map<std::string, int> &operandValues);
@@ -22,12 +23,13 @@ class avr {
     int SREGGetValue (std::string argument, std::unordered_map<std::string, int> &operandValues);
     int regBitGetValue(std::string argument, std::unordered_map<std::string, int> &operandValues);
     int defSREGGetValue(std::string argument);
-    int regGetValue (std::string argument); 
+    int regGetValue (std::string argument);
     int constGetValue (std::string argument, std::unordered_map<std::string, int> &operandValues);
 
     void setValue(std::string left, int value, std::unordered_map<std::string, int> &operandValues,
                   std::set<uint16_t> &changedRegisters);
-    void memSetValue(std::string left, int value, std::unordered_map<std::string, int> &operandValues, std::set<uint16_t> &changedRegisters);
+    void memSetValue(std::string left, int value, std::unordered_map<std::string, int> &operandValues, 
+                     std::set<uint16_t> &changedRegisters);
     void SREGSetValue(std::string left, int value, std::unordered_map<std::string, int> &operandValues);
     void setRegValue(std::string left, int value, 
                      std::set<uint16_t> &changedRegisters);
@@ -53,7 +55,7 @@ void makeOperandMap(std::string args,
 void fillActionsVector(std::string comands, std::vector<std::string> &actions);
 
 
-int operationPrioriry(char c);
+int operationPriority(char c);
 
 class avrException {
  public:

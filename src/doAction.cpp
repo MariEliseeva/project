@@ -21,7 +21,7 @@ void avr::doAction(std::string action, std::unordered_map<std::string, int> &ope
 
         ifDo = operEvaluate(expr, operandValues, changedRegisters);//expression.cpp
     }
-if (ifDo) {
+    if (ifDo) {
         //делим выражение на правую и левую часть. Правая - выражение, левая - куда его значение присвоить.
         for (; action[i] != '=' && i < action.size(); i++) {
             left += action[i];
