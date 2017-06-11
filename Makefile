@@ -53,6 +53,3 @@ test2.o: f_test/test2.cpp
 
 clean:
 	rm bin/*.o ./avr ./bin/test ./bin/test1 ./bin/test2
-
-
-
