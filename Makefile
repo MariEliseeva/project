@@ -36,23 +36,8 @@ test.o: test/test.cpp
 	mkdir -p bin
 	g++ -c -std=c++11 -Iinclude -pedantic -Wall -Wextra -Werror test/test.cpp -o ./bin/test.o
 
-test1: test1.o avr.o readValues.o doAction.o getValue.o setValue.o expression.o
-	mkdir -p bin
-	g++ -g -std=c++11 -pedantic -Wall -Wextra -Werror bin/test1.o bin/avr.o bin/readValues.o bin/doAction.o bin/getValue.o bin/setValue.o bin/expression.o -o bin/test1
-test1.o: f_test/test1.cpp
-	mkdir -p bin
-	g++ -c -g -std=c++11 -pedantic -Wall -Wextra -Werror -Iinclude f_test/test1.cpp -o bin/test1.o
-
-test2: test2.o avr.o readValues.o doAction.o getValue.o setValue.o expression.o
-	mkdir -p bin
-	g++ -g -std=c++11 -pedantic -Wall -Wextra -Werror bin/test2.o bin/avr.o bin/readValues.o bin/doAction.o bin/getValue.o bin/setValue.o bin/expression.o -o bin/test2
-test2.o: f_test/test2.cpp
-	mkdir -p bin
-	g++ -c -g -std=c++11 -pedantic -Wall -Wextra -Werror -Iinclude f_test/test2.cpp -o bin/test2.o
-
-
 clean:
-	rm bin/*.o ./avr ./bin/test ./bin/test1 ./bin/test2
+	rm bin/*.o ./avr ./bin/test
 
 
 
