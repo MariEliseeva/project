@@ -10,7 +10,7 @@ make test - собирает юнит-тесты <br>
 Их запуск (после сборки - make):<br>
 ./avr -test f_test/input<br>
 ./avr -test f_test/input_fib<br>
-После запуска в файле output.out появится результат выполнения программы.<br>
+После каждого запуска в файле output.out появляется результат выполнения программы.<br>
 Ожидаемый результат для первого теста - output_res, для второго - output_fib_res.<br>
 ### Про pull request<br>
 Работающий код находится на ветке branch_with_project<br>
