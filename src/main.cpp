@@ -1,6 +1,7 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <cstring>
 
 #include "avr.h"
 
@@ -57,7 +58,22 @@ void writeInfo(std::set <uint16_t>changedRegisters, float time, avr &em) {
     }
 }
 
-int main() {
+int main(int argc, char** argv) {
+
+    if ((argc != 1 && argc != 3) || (argc == 3 && strcmp(argv[1], "-test"))) {
+        std::cout << "Comand line arguments are used only for testing.\nPlease run program without them\n";
+        return 0;
+    }
+    if (argc == 3) {
+        // Этот раздел необходим только для тестирования программы.
+        if (freopen(argv[2], "r", stdin) == NULL) {
+            std::cout << "Comand line arguments are used only for testing.\nPlease run program without them\n";
+            return 0;
+        }
+
+        freopen("f_test/output", "w", stdout);
+    }
+
     std::cout << "\n\nThis is an AVR emulator.";
 
     
@@ -75,9 +91,7 @@ int main() {
         } else {
             endRead = true;
         }
-    }
-
-    
+    }    
 
 
     std::string name, variables, actions;
