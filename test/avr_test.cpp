@@ -10,8 +10,8 @@ void AvrTest::avrTest1() {
 }
 
 void AvrTest::avrTest2() {
-    avr av1(65);
-    DO_CHECK(av1.memorySize == 65);
+    avr av1(60);
+    DO_CHECK(av1.memorySize == 64);
 }
 
 void AvrTest::operationPriorityTest() {
