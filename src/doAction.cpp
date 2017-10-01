@@ -3,6 +3,7 @@
 
 void avr::doAction(std::string action, std::unordered_map<std::string, int> &operandValues, std::set<uint16_t> &changedRegisters) {
     //выполнение какого-то одного действия.
+    //making one action.
 
     std::string left = "", right = "";
     
@@ -10,6 +11,7 @@ void avr::doAction(std::string action, std::unordered_map<std::string, int> &ope
     bool ifDo = true;
     if (action[0] == 'i' && action[1] == 'f') { 
         //Если есть условие, то здесь оно проверяется.
+        // there is a condition, it is checked here.
 	    i += 3;
 	    std::string expr;
 	    size_t brackets = 1;
@@ -23,6 +25,7 @@ void avr::doAction(std::string action, std::unordered_map<std::string, int> &ope
     }
     if (ifDo) {
         //делим выражение на правую и левую часть. Правая - выражение, левая - куда его значение присвоить.
+        // divide an expression on left and right parts. Right - an expression, left - where to put a result.
         for (; action[i] != '=' && i < action.size(); i++) {
             left += action[i];
         }

@@ -148,6 +148,7 @@ int avr::constGetValue (std::string argument, std::unordered_map<std::string, in
 }
 int avr::getValue(std::string argument, std::unordered_map<std::string, int> &operandValues) {
     //если просто число, то оно и возвращается. 
+    // if it is just number -- it returns.
 	bool isNumberExpr = true;    
 
     for (size_t i = 0; i < argument.size(); i++) {
@@ -162,6 +163,8 @@ int avr::getValue(std::string argument, std::unordered_map<std::string, int> &op
 
     //Может быть значение на вершине стека, из регистра с флагами, 
     //из регистров общего назначения, из памяти, значение констант и т.д.
+    //Might be a vakue from the top of stack, from flags register, 
+    //from general-purpose registers, from memory, consant values etc.
 
     if (argument == "STACK") return stackGetValue();
 
@@ -169,22 +172,25 @@ int avr::getValue(std::string argument, std::unordered_map<std::string, int> &op
     if (argument[0] == 'S' && argument[1] == 'R' && 
         argument[2] == 'E' && argument[3] == 'G' && argument[4] == '(') 
         return SREGGetValue(argument, operandValues); //обращение к флагам через SREG
+                                                      //flags in SREG
 
     if (argument[0] == 'R' && ((argument.size() >= 3 && argument[2] == '(') 
                             || (argument.size() >= 4 && argument[3] == '('))) {
         return regBitGetValue(argument, operandValues);//определённый бит регистра
-        
+                                                       //a bit from a register        
     }
 
     if (argument[0] == 'R' && argument[1] >= 'a' && argument[1] <= 'z' ) {
     	if (operandValues.count(argument) == 0) throw avrException("Unknown argument in comands description file.");
         return memory[operandValues[argument]]; //Регистры - аргументы команды
+                                                // Registers, which are command's arguments.
     }
 
 
 
     if (argument[0] == 'R' && argument[1] >= '0' && argument[1] <= '9') {
     	return regGetValue(argument);//регистр по номеру
+                                     //register by number
     }
 
     if (argument == "K8" || argument == "k" || 
@@ -192,14 +198,17 @@ int avr::getValue(std::string argument, std::unordered_map<std::string, int> &op
         argument == "s" || argument == "P" || 
         argument == "b") {
         return constGetValue(argument, operandValues); //константы - аргументы команды
+                                                       //constant vakues, which are command's argument
     } 
 
     if (argument == "C" || argument == "Z" || argument == "N" || argument == "V" ||
         argument == "S" || argument == "H" || argument == "T" || argument == "I")
         return defSREGGetValue(argument); //флаги по имени
+                                         //flags by their names
 
     if (argument == "PC") {
         return PC; //программный счётчик
+                   //prigramm counter
     }
 
     if (argument == "RX") {
@@ -228,6 +237,7 @@ int avr::getValue(std::string argument, std::unordered_map<std::string, int> &op
         return res;
     }
     //пары регистров - X,Y,Z  
+    //paired registers - X,Y,Z
 
     throw avrException("Unknown argument in comands description file.");
     return 0;

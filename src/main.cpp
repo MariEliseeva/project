@@ -66,6 +66,7 @@ int main(int argc, char** argv) {
     }
     if (argc == 3) {
         // Этот раздел необходим только для тестирования программы.
+        // this part is for testing.
         if (freopen(argv[2], "r", stdin) == NULL) {
             std::cout << "Comand line arguments are used only for testing.\nPlease run program without them\n";
             return 0;

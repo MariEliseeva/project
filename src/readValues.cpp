@@ -43,7 +43,8 @@ void avr::fillOperandMap(std::string values,
     std::string operand = "";
     int value, regNumber = 0;
     std::unordered_map<std::string, int> emptyMap; 
-    //На даном этапе при вычислении значени выражения нельзя использовать что-то, кроме констант.
+    //На даном этапе при вычислении значения выражения нельзя использовать что-то, кроме констант.
+    //here you cannot use something except constant values.
                         
     for (size_t i = 0; i < values.length(); i++) {
         if (values[i] == ',') {
@@ -53,9 +54,11 @@ void avr::fillOperandMap(std::string values,
             		&& operand[2] >= '0' && operand[2] <= '9')))) {
                 value = operEvaluate(operand, emptyMap, changedRegisters); 
                 //Если передавали константу/константное выражение, то посчитаем значение (expression.cpp)
+                //If was given a constant or a constant vales -- calculate it here.
             } else {
                 value = regNumber;
                 //Если передавали регистр - получаем номер регистра.
+                //If was given register number - take it.
             }
                 regNumber = 0;
                 operandValues[operandNumber[operNumber]] = value;
@@ -66,6 +69,7 @@ void avr::fillOperandMap(std::string values,
             if (values[i] >= '0' && values[i] <= '9') {
                 regNumber = 10 * regNumber + values[i] - '0';
             } //если передаётся номер регистра, то тут этот номер посчитается.
+              //here the number of register will be counted.
         }
     }
 

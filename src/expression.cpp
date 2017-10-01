@@ -17,6 +17,7 @@ int operationPriority( char c ) {
 
 int avr::operEvaluate(std::string expr, std::unordered_map<std::string, int> &operandValues, std::set<uint16_t> &changedRegisters) {
 	//вычисление значения арифметического выражения.
+    //calculating an expression.
 
     int operNumber = 0;
     int opers[MAX_LEN];

@@ -145,6 +145,7 @@ void avr::setRegBitValue(std::string left, int value,
 
 void avr::setValue(std::string left, int value, std::unordered_map<std::string, int> &operandValues, std::set<uint16_t> &changedRegisters) {
     //Присваивает значение в регистр/флаг/по адресу в памяти/в стек
+    //put a value in a needed place.
 
     if (left[0] == '(') {
         memSetValue(left, value, operandValues, changedRegisters);
